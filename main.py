@@ -3,9 +3,6 @@ from client import *
 from optionexecutorfacade import *
 
 
-# connection = sqlite3.connect('seleries.db')
-
-
 class Main:
     def __init__(self,option_executor,client_driver):
         self.__options = option_executor
@@ -33,12 +30,6 @@ class Main:
             elif answer == 7:
                 exit(0)
         
-
-# if __name__ == "__main__":
-#     try:
-#         Main(HabitantController(connection, ClientDriver(ConsoleClient())),ClientDriver(ConsoleClient())).start()
-#     except Exception as e:
-#         print(f'Программа принудительно завершила работу с ошибкой {e}, сообщите разработчику и перезапустите менеджер')
 
 Main(OptionExecutorFacade('seleries.db', ClientDriver(ConsoleClient())),
      ClientDriver(ConsoleClient())).start()

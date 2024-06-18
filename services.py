@@ -46,8 +46,10 @@ class SeleryToAllHabitantsService(Service):
 class TransactionWithTwoHabiatntsService(Service):
     def execute(self,id_to_decrease,id_to_increase,amount):
         #FIXME вывод словаря из SqlSelect багованый, баланс доступен по ключу id
-        increased_habitant_balance = SqlSelect(self._connection).execute('habitants','balance',id=id_to_increase)[0]['id'] + amount
-        decreased_habitant_balance = SqlSelect(self._connection).execute('habitants', 'balance', id=id_to_decrease)[0]['id'] - amount
+        print(SqlSelect(self._connection).execute(
+            'habitants', 'balance', id=id_to_increase))
+        increased_habitant_balance = SqlSelect(self._connection).execute('habitants','balance',id=id_to_increase)[0][0] + amount
+        decreased_habitant_balance = SqlSelect(self._connection).execute('habitants', 'balance', id=id_to_decrease)[0][0] - amount
 
         result_sql_string = SqlUpdateStringGenerator().generate_sql_string('habitants',id_to_decrease,balance=decreased_habitant_balance) + SqlUpdateStringGenerator().generate_sql_string('habitants',id_to_increase,balance=increased_habitant_balance)
         
