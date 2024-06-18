@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABC
 from sqlstringgenerators import *
+import sqlite3
 
 
 class SqlCommand(ABC):
@@ -12,24 +13,28 @@ class SqlCommand(ABC):
 
 class SqlInsert(SqlCommand):
     def execute(self, table, **new_object_params):
-        cursor = self._data_base.cursor()
+        connection = sqlite3.connect(self._data_base)
+        cursor = connection.cursor()
 
         sql_string = SqlInsertStringGenerator().generate_sql_string(table,**new_object_params)
         cursor.execute(sql_string)
 
-        self._data_base.commit()
+        connection.commit()
         cursor.close()
+        connection.close()
 
 
 class SqlGetColumnsFromTable(SqlCommand):
     def execute(self, table):
-        cursor = self._data_base.cursor()
+        connection = sqlite3.connect(self._data_base)
+        cursor = connection.cursor()
 
         sql_string = SqlColumnsFromTableStringGenerator().generate_sql_string(table)
         cursor.execute(sql_string)
 
         result = cursor.fetchall()
         cursor.close()
+        connection.close()
         return self.__generate_list_with_columns_name(result)
 
     #TODO refactoring
@@ -43,7 +48,8 @@ class SqlGetColumnsFromTable(SqlCommand):
 
 class SqlSelect(SqlCommand):
     def execute(self, table, *fields_to_select, **select_condition_fields):
-        cursor = self._data_base.cursor()
+        connection = sqlite3.connect(self._data_base)
+        cursor = connection.cursor()
 
         if not select_condition_fields:
             sql_string = SqlSelectStringGenerator().generate_sql_string(table, *fields_to_select)
@@ -53,6 +59,8 @@ class SqlSelect(SqlCommand):
         cursor.execute(sql_string)
 
         result = cursor.fetchall()
+        cursor.close()
+        connection.close()
         return self.__generate_list_with_dicts_of_objects(result, table)
     
     #TODO refactoring
@@ -74,32 +82,38 @@ class SqlSelect(SqlCommand):
 
 class SqlUpdate(SqlCommand):
     def execute(self, table, instance_id, **fields_and_values_to_update):
-        cursor = self._data_base.cursor()
+        connection = sqlite3.connect(self._data_base)
+        cursor = connection.cursor()
 
         sql_string = SqlUpdateStringGenerator().generate_sql_string(table, instance_id, **fields_and_values_to_update)
         cursor.execute(sql_string)
 
-        self._data_base.commit()
+        connection.commit()
         cursor.close()
+        connection.close()
 
 
 class SqlDelete(SqlCommand):
     def execute(self, table, **instance_params):
-        cursor = self._data_base.cursor()
+        connection = sqlite3.connect(self._data_base)
+        cursor = connection.cursor()
 
         sql_string = SqlDeleteStringGenerator().generate_sql_string(table,**instance_params)
         cursor.execute(sql_string)
 
-        self._data_base.commit()
+        connection.commit()
         cursor.close()
+        connection.close()
 
 
 class SqlTransaction(SqlCommand):
     def execute(self,sql_operations_string):
-        cursor = self._data_base.cursor()
+        connection = sqlite3.connect(self._data_base)
+        cursor = connection.cursor()
 
         sql_string = SqlTransactionStringGenerator().generate_sql_string(sql_operations_string)
         cursor.executescript(sql_string)
 
-        self._data_base.commit()
+        connection.commit()
         cursor.close()
+        connection.close()

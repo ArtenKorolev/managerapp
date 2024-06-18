@@ -1,10 +1,9 @@
-import sqlite3
 from clientdrivers import *
 from client import *
 from optionexecutorfacade import *
 
 
-connection = sqlite3.connect('seleries.db')
+# connection = sqlite3.connect('seleries.db')
 
 
 class Main:
@@ -41,5 +40,5 @@ class Main:
 #     except Exception as e:
 #         print(f'Программа принудительно завершила работу с ошибкой {e}, сообщите разработчику и перезапустите менеджер')
 
-Main(OptionExecutorFacade(connection, ClientDriver(ConsoleClient())),
+Main(OptionExecutorFacade('seleries.db', ClientDriver(ConsoleClient())),
      ClientDriver(ConsoleClient())).start()
