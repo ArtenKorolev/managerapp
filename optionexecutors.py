@@ -65,7 +65,7 @@ class TransactionWithTwoHabitantsExecutor(OptionExecutor):
         TransactionWithTwoHabiatntsService(
             self._connection).execute(*transaction_data)
         self._client_driver.output('Транзакция завершилась успешно!')
-        sleep(40)
+        sleep(3)
 
 
 class DeleteHabitantExecutor(OptionExecutor):

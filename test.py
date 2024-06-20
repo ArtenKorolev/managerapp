@@ -1,4 +1,6 @@
 from sql import *
+from validators import *
+
 
 def test_sql_select():
     a = SqlSelect('seleries.db').execute('habitants','name','job',name='илья')
@@ -10,4 +12,8 @@ def test_sql_select():
     a = SqlSelect('seleries.db').execute('habitants', 'job', 'selery',name='лера')
     print(a)
 
-test_sql_select()
+def test_validators():
+    IsNameInDataBaseValidator('илья').validate()
+
+# test_sql_select()
+test_validators()

@@ -55,7 +55,7 @@ class ClientDriver:
 
     def __try_to_get_habitant_params(self):
         name = self.__client.user_input('Имя :')
-        selery = int(self.__client.user_input('Зарплата :'))
+        selery = int(self.__client.user_input('Зарплата: '))
         balance = int(self.__client.user_input('Баланс: '))
         job = self.__client.user_input('Работа: ')
 
