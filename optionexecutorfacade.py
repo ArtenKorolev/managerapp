@@ -9,6 +9,7 @@ class OptionExecutorFacade:
         self.__transaction_executor = TransactionWithTwoHabitantsExecutor(connection, client_driver)
         self.__all_habitant_browser = GetAllHabitantExecutor(connection, client_driver)
         self.__habitant_deleter = DeleteHabitantExecutor(connection,client_driver)
+        self.__one_habitant_browser = GetOneHabitantExecutor(connection,client_driver)
     
     def update_habitant(self):
         self.__updater.execute()
@@ -27,3 +28,6 @@ class OptionExecutorFacade:
 
     def delete_habitant(self):
         self.__habitant_deleter.execute()
+
+    def get_one_habitant(self):
+        self.__one_habitant_browser.execute()

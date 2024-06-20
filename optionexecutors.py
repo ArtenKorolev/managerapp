@@ -14,17 +14,29 @@ class OptionExecutor(ABC):
 
 class GetAllHabitantExecutor(OptionExecutor):
     def execute(self):
-        habitants = GetAllHabitantsService(self._connection).execute()
+        all_habitants_data = GetAllHabitantsService(self._connection).execute()
 
-        for i in habitants:
-            self._client_driver.output(f"ID:{i['id']}")
-            self._client_driver.output(f"Имя: {i['name']}")
-            self._client_driver.output(f"Зарплата: {i['selery']}")
-            self._client_driver.output(f"Баланс: {i['balance']}")
-            self._client_driver.output(f"Работа: {i['job']}")
-            self._client_driver.output('------------------')
+        for i in all_habitants_data:
+            GetOneHabitantExecutor(self._connection,self._client_driver).print_one_habitant_data(i)
 
         self._client_driver.user_input('')
+
+
+class GetOneHabitantExecutor(OptionExecutor):
+    def execute(self):
+        habitant_name = self._client_driver.user_input('Введите имя жителя, чьи параметры вы хотите посмотреть:')
+        habitant_data = GetOneHabitantDataSevice(self._connection).execute(habitant_name)
+
+        self.print_one_habitant_data(habitant_data)
+        self._client_driver.user_input('')
+
+    def print_one_habitant_data(self, habitant_data):
+        self._client_driver.output(f"ID:{habitant_data['id']}")
+        self._client_driver.output(f"Имя: {habitant_data['name']}")
+        self._client_driver.output(f"Зарплата: {habitant_data['selery']}")
+        self._client_driver.output(f"Баланс: {habitant_data['balance']}")
+        self._client_driver.output(f"Работа: {habitant_data['job']}")
+        self._client_driver.output('------------------')
 
 
 class HabitantUpdateExecutor(OptionExecutor):
@@ -33,6 +45,7 @@ class HabitantUpdateExecutor(OptionExecutor):
         UpdateHabitantService(self._connection).execute(
             updated_habitant_params['habitant_id'], **updated_habitant_params['new_params'])
         
+
 class NewHabitantCreateExecutor(OptionExecutor):
     def execute(self):
         new_habitant_params = self._client_driver.get_new_habitant_params()

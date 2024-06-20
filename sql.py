@@ -61,19 +61,25 @@ class SqlSelect(SqlCommand):
         result = cursor.fetchall()
         cursor.close()
         connection.close()
-        return self.__generate_list_with_dicts_of_objects(result, table) if not select_condition_fields else result
+        return self.__generate_list_with_dicts_of_objects(table,result,*fields_to_select) 
     
     #TODO refactoring
-    def __generate_list_with_dicts_of_objects(self,list_with_objects_tuples, table):
+    def __generate_list_with_dicts_of_objects(self,table,list_with_tuples_with_object_data, *fields_to_select):
         list_with_dicts_of_objects = []
 
         list_of_columns_name = SqlGetColumnsFromTable(self._data_base).execute(table)
 
-        for i in list_with_objects_tuples:
+        for i in list_with_tuples_with_object_data:
             current_object_dict = dict()
-            
+
+            if fields_to_select == ('all',):
+                columns_names = list_of_columns_name
+            elif fields_to_select != ('all',):
+                columns_names = fields_to_select 
+
             for j in range(len(i)):
-                current_object_dict[list_of_columns_name[j]] = i[j]
+
+                current_object_dict[columns_names[j]] = i[j]
 
             list_with_dicts_of_objects.append(current_object_dict)
         
