@@ -1,4 +1,4 @@
-from services import *
+from source.entities.services import *
 
 
 class ClientDriver:

@@ -1,6 +1,5 @@
-from abc import ABC,abstractmethod
-from sql import *
-from exeptions import *
+from source.db.sql import *
+from source.exeptions.exeptions import *
 
 
 class Validator(ABC):
@@ -30,7 +29,7 @@ class IsNameInDataBaseValidator(Validator):
         self.__name = name
 
     def validate(self):
-        all_names = SqlSelect('seleries.db').execute('habitants','name')
+        all_names = SqlSelect('population.db').execute('habitants','name')
 
         for i in all_names:
             if i['name'] == self.__name:

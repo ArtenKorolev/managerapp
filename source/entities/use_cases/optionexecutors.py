@@ -1,4 +1,4 @@
-from services import *
+from source.entities.services import *
 from time import sleep
 from abc import ABC, abstractmethod
 
@@ -69,7 +69,7 @@ class TransactionWithTwoHabitantsExecutor(OptionExecutor):
 
 
 class DeleteHabitantExecutor(OptionExecutor):
-    def execute(self):
+    def execute(self, name_to_delete):
         name_to_delete = self._client_driver.get_name_of_habitant_to_delete()
         DeleteHabitantService(self._connection).execute(name=name_to_delete)
         self._client_driver.output(

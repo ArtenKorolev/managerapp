@@ -44,3 +44,4 @@ class KwargsToInsertSqlStrConverter(Converter):
             values_str += f'{self._set_quotes_if_string(value)},'
 
         return [params_str.strip(','), values_str.strip(',')]
+

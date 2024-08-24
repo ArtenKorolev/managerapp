@@ -1,6 +1,7 @@
-from clientdrivers import *
-from client import *
-from optionexecutorfacade import *
+from source.client.clientdrivers import *
+from source.client.client import *
+from source.entities.use_cases.optionexecutorfacade import *
+from source.sqlitedb.sqlite3 import Sqlite
 
 
 class Main:
@@ -31,6 +32,10 @@ class Main:
                 exit(0)
             elif answer == 7:
                 self.__options.get_one_habitant()
-        
 
-Main(OptionExecutorFacade('seleries.db', ClientDriver(ConsoleClient())),ClientDriver(ConsoleClient())).start()
+if __name__ == '__main__':
+    db = Sqlite('population.db')
+    client = ConsoleClient()
+    c_driver = ClientDriver(client)
+    option_exec = OptionExecutorFacade(db, c_driver)
+    Main(option_exec,c_driver).start()

@@ -1,5 +1,5 @@
 from abc import ABC,abstractmethod
-from converters import *
+from .converters import *
 
 
 class SqlStringGenerator(ABC):
@@ -25,10 +25,10 @@ class SqlSelectStringGenerator(SqlStringGenerator):
 
 class SqlSelectWithConditionsStringGenerator(SqlStringGenerator):
     def generate_sql_string(self, table, *fields_to_select, **conditions):
-        arguments = ArgsToSqlStrConverter().convert(*fields_to_select)
+        fields = ArgsToSqlStrConverter().convert(*fields_to_select)
         conditions = KwargsToSqlStrConverter().convert(**conditions)
 
-        sql_string = f"SELECT {arguments} FROM {table} WHERE {conditions};"
+        sql_string = f"SELECT {fields} FROM {table} WHERE {conditions};"
         return sql_string
     
 
@@ -59,4 +59,3 @@ class SqlTransactionStringGenerator(SqlStringGenerator):
     def generate_sql_string(self,sql_operations_string):
         sql_string = "BEGIN TRANSACTION;" + sql_operations_string + "COMMIT;"
         return sql_string
-        
