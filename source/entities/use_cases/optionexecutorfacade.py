@@ -3,13 +3,13 @@ from source.entities.use_cases.optionexecutors import *
 
 class OptionExecutorFacade:
     def __init__(self,connection,client_driver):
-        self.__updater = HabitantUpdateExecutor(connection,client_driver)
+        self.__updater = HabitantUpdateExecutor(connection, client_driver)
         self.__creator = NewHabitantCreateExecutor(connection, client_driver)
         self.__selery_issuer = SeleryToAllHabitantsExecutor(connection, client_driver)
         self.__transaction_executor = TransactionWithTwoHabitantsExecutor(connection, client_driver)
         self.__all_habitant_browser = GetAllHabitantExecutor(connection, client_driver)
-        self.__habitant_deleter = DeleteHabitantExecutor(connection,client_driver)
-        self.__one_habitant_browser = GetOneHabitantExecutor(connection,client_driver)
+        self.__habitant_deleter = DeleteHabitantExecutor(connection, client_driver)
+        self.__one_habitant_browser = GetOneHabitantExecutor(connection, client_driver)
     
     def update_habitant(self):
         self.__updater.execute()
